@@ -115,11 +115,11 @@ impl YResponse {
 /// Struct for single quote
 #[derive(Debug)]
 pub struct Quote {
-    pub timestamp: u64,
+    pub timestamp: i64,
     pub open: f64,
     pub high: f64,
     pub low: f64,
-    pub volume: u32,
+    pub volume: i64,
     pub close: f64,
     pub adjclose: f64,
 }
@@ -133,7 +133,7 @@ pub struct YChart {
 #[derive(Deserialize, Debug)]
 pub struct YQuoteBlock {
     pub meta: YMetaData,
-    pub timestamp: Vec<u64>,
+    pub timestamp: Vec<i64>,
     pub indicators: QuoteBlock,
 }
 
@@ -146,9 +146,9 @@ pub struct YMetaData {
     #[serde(rename = "instrumentType")]
     pub instrument_type: String,
     #[serde(rename = "firstTradeDate")]
-    pub first_trade_date: u32,
+    pub first_trade_date: i64,
     #[serde(rename = "regularMarketTime")]
-    pub regular_market_time: u32,
+    pub regular_market_time: i64,
     pub gmtoffset: i32,
     pub timezone: String,
     #[serde(rename = "exchangeTimezoneName")]
@@ -186,8 +186,8 @@ pub struct TradingPeriod {
 #[derive(Deserialize, Debug)]
 pub struct PeriodInfo {
     pub timezone: String,
-    pub start: u32,
-    pub end: u32,
+    pub start: i64,
+    pub end: i64,
     pub gmtoffset: i32,
 }
 
@@ -199,7 +199,7 @@ pub struct QuoteBlock {
 }
 
 impl QuoteBlock {
-    fn get_ith_quote(&self, timestamp: u64, i: usize) -> Result<Quote, YahooError> {
+    fn get_ith_quote(&self, timestamp: i64, i: usize) -> Result<Quote, YahooError> {
         let adjclose = match &self.adjclose {
             Some(adjclose) => adjclose[0].adjclose[i],
             None => None,
@@ -228,7 +228,7 @@ pub struct AdjClose {
 
 #[derive(Deserialize, Debug)]
 pub struct QuoteList {
-    pub volume: Vec<Option<u32>>,
+    pub volume: Vec<Option<i64>>,
     pub high: Vec<Option<f64>>,
     pub close: Vec<Option<f64>>,
     pub low: Vec<Option<f64>>,
